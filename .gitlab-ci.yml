@@ -1,0 +1,7 @@
+stages:
+  - test
+
+dummy_job:
+  stage: test
+  script:
+    - echo "Just a dummy pipeline"
