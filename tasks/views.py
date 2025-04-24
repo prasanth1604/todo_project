@@ -70,6 +70,14 @@ class TaskView(viewsets.ViewSet):
 
     def update(self, request, pk=None):
         task = get_object_or_404(self.queryset, pk=pk) # Use class queryset
+        serializer = self.serializer_class(task, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+    def partial_update(self, request, pk=None):
+        task = get_object_or_404(self.queryset, pk=pk)
         serializer = self.serializer_class(task, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
