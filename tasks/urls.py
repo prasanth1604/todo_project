@@ -8,5 +8,5 @@ router.register(r"tasks", views.TaskView, "task")
 
 urlpatterns = router.urls
 urlpatterns += [
-    path('completed/', views.TaskView.as_view({'get': 'completed'}), name='task-completed'),
+    path('tasks/completed/', views.TaskView.as_view({'get': 'completed'}), name='task-completed'),
 ]
