@@ -10,8 +10,6 @@ A RESTful API for task management built with Django REST Framework.
   - [Docker Setup](#docker-setup)
 - [API Documentation](#api-documentation)
   - [Endpoints](#endpoints)
-  - [Models](#models)
-  - [Serializers](#serializers)
   - [Viewsets](#viewsets)
 
 ## Features
