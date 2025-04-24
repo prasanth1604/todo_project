@@ -9,6 +9,18 @@ from django.utils import timezone
 from rest_framework.pagination import PageNumberPagination
 
 
+class CustomPageNumberPagination(PageNumberPagination):
+    page_size = 10
+    page_size_query_param = 'page_size'
+    max_page_size = 100
+    
+    def get_paginated_response(self, data):
+        return Response({
+            'count': self.page.paginator.count,
+            'results': data
+        })
+
+
 class TaskView(viewsets.ViewSet):
     serializer_class = TaskSerialize
     queryset = Task.objects.all()  # Initialize queryset at the class level
@@ -39,7 +51,7 @@ class TaskView(viewsets.ViewSet):
             tasks = tasks.filter(title__icontains=search_title)
 
         # Pagination
-        paginator = PageNumberPagination()
+        paginator = CustomPageNumberPagination()
         paginated_tasks = paginator.paginate_queryset(tasks, request)
         serializer = self.serializer_class(paginated_tasks, many=True)
         return paginator.get_paginated_response(serializer.data)
