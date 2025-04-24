@@ -9,9 +9,22 @@ from django.utils import timezone
 from rest_framework.pagination import PageNumberPagination
 
 
+class CustomPageNumberPagination(PageNumberPagination):
+    page_size = 10
+    page_size_query_param = 'page_size'
+    max_page_size = 100
+    
+    def get_paginated_response(self, data):
+        return Response({
+            'count': self.page.paginator.count,
+            'results': data
+        })
+
+
 class TaskView(viewsets.ViewSet):
     serializer_class = TaskSerialize
     queryset = Task.objects.all()  # Initialize queryset at the class level
+    pagination_class = CustomPageNumberPagination
 
     def list(self, request):
         tasks = self.queryset  # Use the class-level queryset
@@ -39,10 +52,14 @@ class TaskView(viewsets.ViewSet):
             tasks = tasks.filter(title__icontains=search_title)
 
         # Pagination
-        paginator = PageNumberPagination()
-        paginated_tasks = paginator.paginate_queryset(tasks, request)
-        serializer = self.serializer_class(paginated_tasks, many=True)
-        return paginator.get_paginated_response(serializer.data)
+        paginator = self.pagination_class()
+        page = paginator.paginate_queryset(tasks, request)
+        if page is not None:
+            serializer = self.serializer_class(page, many=True)
+            return paginator.get_paginated_response(serializer.data)
+        
+        serializer = self.serializer_class(tasks, many=True)
+        return Response(serializer.data)
 
     def create(self, request):
         serializer = self.serializer_class(data=request.data)
@@ -58,6 +75,14 @@ class TaskView(viewsets.ViewSet):
 
     def update(self, request, pk=None):
         task = get_object_or_404(self.queryset, pk=pk) # Use class queryset
+        serializer = self.serializer_class(task, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+    def partial_update(self, request, pk=None):
+        task = get_object_or_404(self.queryset, pk=pk)
         serializer = self.serializer_class(task, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
