@@ -100,6 +100,91 @@ The task list endpoint (`/tasks/`) supports the following query parameters:
 - `sort_by_date`: Sort tasks by creation date when parameter is present
   - Example: `/tasks/?sort_by_date=true`
 
+#### cURL Examples
+
+##### List All Tasks
+```bash
+curl -X GET \
+  http://localhost:80/tasks/ \
+  -H 'Content-Type: application/json'
+```
+
+##### List Completed Tasks
+```bash
+curl -X GET \
+  http://localhost:80/tasks/completed/ \
+  -H 'Content-Type: application/json'
+```
+
+##### Create a New Task
+```bash
+curl -X POST \
+  http://localhost:80/tasks/ \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "title": "New Task",
+    "description": "Task description here",
+    "completed": true
+}'
+```
+
+##### View Specific Task
+```bash
+curl -X GET \
+  http://localhost:80/tasks/1/ \
+  -H 'Content-Type: application/json'
+```
+
+##### Update Specific Task (Full Update)
+```bash
+curl -X PUT \
+  http://localhost:80/tasks/1/ \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "title": "Updated Task",
+    "description": "Updated description",
+    "completed": true
+}'
+```
+
+##### Update Specific Task (Partial Update)
+```bash
+curl -X PATCH \
+  http://localhost:80/tasks/1/ \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "completed": false
+}'
+```
+
+##### Delete Task
+```bash
+curl -X DELETE \
+  http://localhost:80/tasks/1/ \
+  -H 'Content-Type: application/json'
+```
+
+##### Search Tasks by Title
+```bash
+curl -X GET \
+  'http://localhost:80/tasks/?search=New%20Task' \
+  -H 'Content-Type: application/json'
+```
+
+##### Search Tasks by Date
+```bash
+curl -X GET \
+  'http://localhost:80/tasks/?search_date=2023-04-24' \
+  -H 'Content-Type: application/json'
+```
+
+##### Sort Tasks by Date
+```bash
+curl -X GET \
+  'http://localhost:80/tasks/?sort_by_date=true' \
+  -H 'Content-Type: application/json'
+```
+
 ### Viewsets
 
 #### TaskView
