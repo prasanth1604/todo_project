@@ -1,4 +1,4 @@
-
+#version: '3.8'
 services:
   db:
     image: postgis/postgis:16-master
@@ -13,12 +13,12 @@ services:
 
   web:
     build: .
-    command: uvicorn core.asgi:application --host 0.0.0.0 --port 80 --reload --log-config log_config.json
+    command: uvicorn core.asgi:application --host 0.0.0.0 --port 8000 --reload --log-config log_config.json
     volumes:
-      - .:/code
+      - .:/app
       - ./temp/:/tmp/
     ports:
-      - "80:80"
+      - "8000:8000"
     depends_on:
       - db
     env_file:

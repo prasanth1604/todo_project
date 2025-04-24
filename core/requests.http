@@ -1,0 +1,33 @@
+### Create a task
+POST http://localhost:8000/api/tasks/
+Content-Type: application/json
+
+{
+  "title": "Integration test 3",
+  "description": "Another for testing",
+  "date": "2003-08-03"
+}
+
+### List all tasks
+GET http://127.0.0.1:8000/api/tasks/
+
+### Sorted by date
+GET http://127.0.0.1:8000/api/tasks/?sort_by_date=true
+
+### Search by date
+GET http://127.0.0.1:8000/api/tasks/?search_date=2003-08-03
+
+### Search by title
+GET http://127.0.0.1:8000/api/tasks/?search=Integration
+
+
+### Update the created task
+PATCH http://127.0.0.1:8000/api/tasks/3/
+Content-Type: application/json
+
+{
+  "description": "Loop works"
+}
+
+### Delete the task
+DELETE http://127.0.0.1:8000/api/tasks/3/
