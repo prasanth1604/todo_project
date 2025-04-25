@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Task Manager</title>
+</head>
+<body>
+  <h1>My Tasks</h1>
+  <ul id="task-list"></ul>
+
+  <script>
+    fetch('http://127.0.0.1:8000/api/tasks/')
+      .then(response => response.json())
+      .then(data => {
+        const list = document.getElementById('task-list');
+        data.forEach(task => {
+          const item = document.createElement('li');
+          item.textContent = task.title;
+          list.appendChild(item);
+        });
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+  </script>
+</body>
+</html>
