@@ -1,8 +1,7 @@
-from rest_framework import routers
-from tasks import views
+from django.urls import path
+from . import views
 
-# api versioning
-router = routers.DefaultRouter()
-router.register(r"tasks", views.TaskView, "task")
-
-urlpatterns = router.urls
+urlpatterns = [
+    path("", views.task_list_create, name="task_list_create"),  # GET + POST
+    path("<int:id>/", views.task_delete_patch, name="task_delete_patch"),  # DELETE + PATCH
+]
