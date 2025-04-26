@@ -1,11 +1,16 @@
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, render, redirect
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from .models import Task
+from .forms import TaskForm
 import json
 from django.utils.dateparse import parse_date
+from django.views.decorators.http import require_http_methods
+
+# ----- API Views -----
 
 @csrf_exempt
+@require_http_methods(["GET", "POST"])
 def task_list_create(request):
     if request.method == "GET":
         tasks = Task.objects.all()
@@ -42,6 +47,7 @@ def task_list_create(request):
         return JsonResponse({"id": task.id, "message": "Task created successfully."}, status=201)
 
 @csrf_exempt
+@require_http_methods(["DELETE", "PATCH"])
 def task_delete_patch(request, id):
     task = get_object_or_404(Task, id=id)
 
@@ -56,3 +62,34 @@ def task_delete_patch(request, id):
         task.completed = data.get("completed", task.completed)
         task.save()
         return JsonResponse({"message": "Task updated successfully."})
+
+# ----- HTML Template Views -----
+
+def task_list_page(request):
+    tasks = Task.objects.all().order_by('-creation_date')
+    return render(request, 'tasks/task_list.html', {'tasks': tasks})
+
+def task_detail_page(request, id):
+    task = get_object_or_404(Task, id=id)
+    return render(request, 'task_detail.html', {'task': task})
+
+def task_create_page(request):
+    if request.method == 'POST':
+        form = TaskForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('task_list_page')
+    else:
+        form = TaskForm()
+    return render(request, 'task_form.html', {'form': form})
+
+def task_update_page(request, id):
+    task = get_object_or_404(Task, id=id)
+    if request.method == 'POST':
+        form = TaskForm(request.POST, instance=task)
+        if form.is_valid():
+            form.save()
+            return redirect('task_list_page')
+    else:
+        form = TaskForm(instance=task)
+    return render(request, 'task_form.html', {'form': form})

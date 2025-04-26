@@ -1,54 +1,43 @@
-{% extends 'base.html' %} {% block content %}
+{% extends 'base.html' %}
 
-<div class="text-center">
+{% block content %}
+<div class="text-center mb-4">
     <h1>Task List</h1>
-
-    <a href="{% url 'task_create' %}" class="btn btn-primary">Add Task</a>
+    <a href="{% url 'task_create_page' %}" class="btn btn-primary">Add Task</a>
 </div>
 
-<table class="table">
+<table class="table table-striped">
     <thead>
         <tr>
-            <th>Image</th>
-            <th>
-                <a class="inline" href="?order_by=title">Name</a>
-                <input
-                    type="text"
-                    id="search-input"
-                    placeholder="Search tasks"
-                />
-            </th>
-            <th>Created</th>
-            <th>Due</th>
-            <th>Priority</th>
+            <th>Title</th>
+            <th>Created Date</th>
             <th>Status</th>
+            <th>Actions</th>
         </tr>
     </thead>
-
     <tbody>
         {% for task in tasks %}
         <tr>
             <td>
-                {% if task.photos.all %}
-                <img src="{{ task.photos.all.first.image.url }}" width="50" />
+                <a href="{% url 'task_detail_page' task.id %}">{{ task.title }}</a>
+            </td>
+            <td>{{ task.creation_date|date:"Y-m-d H:i" }}</td>
+            <td>
+                {% if task.completed %}
+                    ✅ Completed
+                {% else %}
+                    ⏳ Incomplete
                 {% endif %}
             </td>
             <td>
-                <a href="{% url 'task_detail' task.pk %}">{{ task.title }}</a>
-            </td>
-            <td>{{ task.creation_date }}</td>
-            <td>{{ task.due_date }}</td>
-            <td>{{ task.priority }}</td>
-            <td>
-                {% if task.is_complete %}Complete{% else %}Incomplete{% endif %}
+                <a href="{% url 'task_update_page' task.id %}" class="btn btn-sm btn-warning">Edit</a>
             </td>
         </tr>
         {% empty %}
         <tr>
-            <td colspan="6">No tasks found.</td>
+            <td colspan="4">No tasks found.</td>
         </tr>
         {% endfor %}
     </tbody>
 </table>
-
 {% endblock %}
