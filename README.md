@@ -14,7 +14,7 @@
 
 ## How to Run Locally
 
-### Clone from GitHub
+### Clone from GitLab
 
 -   Install Python3
 -   Install pip
