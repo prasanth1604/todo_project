@@ -1,8 +1,14 @@
-from rest_framework import routers
-from tasks import views
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from .views import TaskViewSet
 
-# api versioning
-router = routers.DefaultRouter()
-router.register(r"tasks", views.TaskView, "task")
+# Create an instance of DefaultRouter, which will automatically generate the URL patterns for the ViewSet
+router = DefaultRouter()
+# Register the TaskViewSet with the router. 
+# The 'r' in the URL path indicates that the route is for the Task model, and 'task' is the basename used for reverse URL lookups.
+router.register(r'', TaskViewSet, basename='task')
 
-urlpatterns = router.urls
+# Define the URL patterns to include the generated routes from the router
+urlpatterns = [
+    path('', include(router.urls)),
+]
