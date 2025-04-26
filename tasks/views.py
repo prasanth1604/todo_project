@@ -6,7 +6,8 @@ from .forms import TaskForm
 import json
 from django.utils.dateparse import parse_date
 from django.views.decorators.http import require_http_methods
-
+from django.utils import timezone
+from datetime import datetime
 # ----- API Views -----
 
 @csrf_exempt
@@ -39,10 +40,22 @@ def task_list_create(request):
 
     if request.method == "POST":
         data = json.loads(request.body)
+        creation_date = data.get("created_date", timezone.now().strftime("%Y-%m-%d"))
+        
+        if isinstance(creation_date, str):
+            try:
+                # Parse the string date
+                creation_date = datetime.strptime(creation_date, "%Y-%m-%d").date()
+                # Make it aware (timezone-aware)
+                creation_date = timezone.make_aware(datetime.combine(creation_date, datetime.min.time()))
+            except ValueError:
+                creation_date = timezone.now()  # Fallback to current date if parsing fails
+        
         task = Task.objects.create(
             title=data.get("title", ""),
             description=data.get("description", ""),
-            completed=data.get("completed", False)
+            completed=data.get("completed", False),
+            creation_date=creation_date
         )
         return JsonResponse({"id": task.id, "message": "Task created successfully."}, status=201)
 

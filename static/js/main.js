@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
     // API endpoints
-    const API_URL = '/api/tasks/';
+    const API_URL = '/tasks/api/';
     
     // DOM elements
     const tasksList = document.getElementById('tasksList');
@@ -30,11 +30,11 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         if (dateFilter.value) {
-            params.append('search_date', dateFilter.value);
+            params.append('date', dateFilter.value);
         }
         
         if (sortByDateBtn.classList.contains('active')) {
-            params.append('sort_by_date', 'true');
+            params.append('sort', 'asc');
         }
         
         if (params.toString()) {
@@ -44,7 +44,8 @@ document.addEventListener('DOMContentLoaded', function() {
         fetch(url)
             .then(response => response.json())
             .then(data => {
-                displayTasks(data.results);
+                console.log(data)
+                displayTasks(data);
             })
             .catch(error => console.error('Error:', error));
     }
@@ -67,7 +68,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 <div class="card-body">
                     <h5 class="card-title">${task.title}</h5>
                     <p class="card-text">${task.description}</p>
-                    <p class="text-muted">Created: ${new Date(task.created_at).toLocaleDateString()}</p>
+                    <p class="text-muted">Created: ${new Date(task.creation_date).toLocaleDateString()}</p>
                 </div>
                 <div class="card-footer">
                     <button class="btn btn-sm btn-primary edit-task" data-id="${task.id}">Edit</button>
