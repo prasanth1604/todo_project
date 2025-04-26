@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="text-center mb-4">
+    <h1>Task List</h1>
+    <a href="{% url 'task_create_page' %}" class="btn btn-primary">Add Task</a>
+</div>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Created Date</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for task in tasks %}
+        <tr>
+            <td>
+                <a href="{% url 'task_detail_page' task.id %}">{{ task.title }}</a>
+            </td>
+            <td>{{ task.creation_date|date:"Y-m-d H:i" }}</td>
+            <td>
+                {% if task.completed %}
+                    ✅ Completed
+                {% else %}
+                    ⏳ Incomplete
+                {% endif %}
+            </td>
+            <td>
+                <a href="{% url 'task_update_page' task.id %}" class="btn btn-sm btn-warning">Edit</a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="4">No tasks found.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

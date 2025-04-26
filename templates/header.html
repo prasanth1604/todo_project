@@ -1,0 +1,27 @@
+<header>
+    <nav
+        class="navbar navbar-expand-lg bg-light text-center px-5 mx-auto flex-column"
+    >
+        <div>
+            <a class="navbar-brand" href="#">Task Manager</a>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{% url 'task_list_create' %}"
+                            >Home</a
+                        >
+                    </li>
+
+                    {% if user.is_authenticated or user.is_staff %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'admin:index' %}"
+                            >Admin</a
+                        >
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>

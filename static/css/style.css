@@ -1,0 +1,80 @@
+/* General Styles */
+body {
+    background-color: #f8f9fa;
+}
+
+/* Card Styles */
+.card {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+/* Task Card Styles */
+.task-card {
+    margin-bottom: 20px;
+}
+
+.task-card .card-title {
+    color: #2c3e50;
+    font-weight: 600;
+}
+
+.task-card .card-text {
+    color: #7f8c8d;
+}
+
+/* Button Styles */
+.btn-primary {
+    background-color: #3498db;
+    border-color: #3498db;
+}
+
+.btn-primary:hover {
+    background-color: #2980b9;
+    border-color: #2980b9;
+}
+
+.btn-danger {
+    background-color: #e74c3c;
+    border-color: #e74c3c;
+}
+
+.btn-danger:hover {
+    background-color: #c0392b;
+    border-color: #c0392b;
+}
+
+/* Search and Filter Section */
+.search-filter-section {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+/* Modal Styles */
+.modal-content {
+    border-radius: 8px;
+}
+
+.modal-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+}
+
+/* Form Styles */
+.form-control:focus {
+    border-color: #3498db;
+    box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .col-md-4 {
+        margin-bottom: 20px;
+    }
+} 
