@@ -12,16 +12,13 @@ class TaskView(viewsets.ModelViewSet):
     def get_queryset(self):
         queryset = Task.objects.all()
 
-        # Sorting by date
         if self.request.query_params.get('sort_by_date') == 'true':
-            queryset = queryset.order_by('-created_at')  # Sorting by creation date in descending order
+            queryset = queryset.order_by('-created_at')  
 
-        # Search by title
         search_title = self.request.query_params.get('search')
         if search_title:
             queryset = queryset.filter(title__icontains=search_title)
 
-        # Search by date
         search_date = self.request.query_params.get('search_date')
         if search_date:
             date = parse_date(search_date)
