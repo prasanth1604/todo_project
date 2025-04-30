@@ -1,8 +1,7 @@
 from rest_framework import routers
-from tasks import views
+from tasks import views  
 
-# api versioning
 router = routers.DefaultRouter()
-router.register(r"tasks", views.TaskView, "task")
+router.register(r'tasks', views.TaskView, basename='task')
 
 urlpatterns = router.urls
