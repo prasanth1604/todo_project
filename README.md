@@ -3,6 +3,10 @@
 Follow these steps to get the application running on your local machine:
 
 ### 1. Clone the Repository
+```bash
+git clone https://github.com/prasanth1604/todo_project.git
+cd todo_project
+```
 
 ### 2. Setup Docker-Desktop on your local machine
 ```bash
