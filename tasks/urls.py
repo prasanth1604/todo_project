@@ -1,8 +1,7 @@
-from rest_framework import routers
-from tasks import views
+from django.urls import path
+from .views import TaskListCreateView, TaskUpdateDeleteView
 
-# api versioning
-router = routers.DefaultRouter()
-router.register(r"tasks", views.TaskView, "task")
-
-urlpatterns = router.urls
+urlpatterns = [
+    path('tasks/', TaskListCreateView.as_view(), name='task-list-create'),
+    path('tasks/<int:pk>/', TaskUpdateDeleteView.as_view(), name='task-update-delete'),
+]
